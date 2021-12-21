@@ -33,7 +33,7 @@ async function main() {
             zip.file(`images/${i}.${posts[i].file_ext}`, Buffer.from(file));
         });
         let out = await zip.generateAsync({ type: "arraybuffer" });
-        fs_1.writeFileSync(`out/${fileName}`, Buffer.from(out));
+        fs_1.writeFileSync(`${__dirname}/out/${fileName}`, Buffer.from(out));
         console.log(`File successfuly downloaded named '${fileName}'`);
     }
     catch (err) {
