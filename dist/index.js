@@ -30,10 +30,10 @@ async function main() {
         let resolve = await Promise.all(promises);
         console.log("Processing...");
         resolve.forEach((file, i) => {
-            zip.file(`image/${i}.${posts[i].file_ext}`, Buffer.from(file));
+            zip.file(`images/${i}.${posts[i].file_ext}`, Buffer.from(file));
         });
         let out = await zip.generateAsync({ type: "arraybuffer" });
-        fs_1.writeFileSync(`./out/${fileName}.zip`, Buffer.from(out));
+        fs_1.writeFile(`./out/${fileName}`, Buffer.from(out), () => process.cwd());
         console.log(`File successfuly downloaded named '${fileName}'`);
     }
     catch (err) {
