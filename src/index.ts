@@ -1,7 +1,7 @@
 import prompt from "./tools/prompt";
 import { getImageChar } from "./tools/Danbooru";
 import axios from "axios";
-import { writeFile } from "fs";
+import { writeFileSync } from "fs";
 import JsZip from "jszip";
 
 main();
@@ -34,7 +34,7 @@ async function main() {
         });
 
         let out = await zip.generateAsync({ type: "arraybuffer" });
-        writeFile(`./out/${fileName}`, Buffer.from(out), () => process.cwd());
+        writeFileSync(`out/${fileName}`, Buffer.from(out));
         console.log(`File successfuly downloaded named '${fileName}'`);
     } catch (err) {
         console.error(err);
