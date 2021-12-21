@@ -1,7 +1,7 @@
 import prompt from "./tools/prompt";
 import { getImageChar } from "./tools/Danbooru";
 import axios from "axios";
-import { writeFileSync } from "fs";
+import { createWriteStream } from "fs";
 import JsZip from "jszip";
 
 main();
@@ -33,9 +33,9 @@ async function main() {
             zip.file(`images/${i}.${posts[i].file_ext}`, Buffer.from(file));
         });
 
-        let out = await zip.generateAsync({ type: "arraybuffer" });
-        writeFileSync(`${__dirname}/out/${fileName}`, Buffer.from(out));
-        console.log(`File successfuly downloaded named '${fileName}'`);
+        let out = zip.generateNodeStream();
+        let write = createWriteStream("./out/" + fileName);
+        out.pipe(write, { end: true }).once("end", () => console.log(`File successfuly downloaded named '${fileName}'`));
     } catch (err) {
         console.error(err);
     }

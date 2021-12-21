@@ -32,9 +32,9 @@ async function main() {
         resolve.forEach((file, i) => {
             zip.file(`images/${i}.${posts[i].file_ext}`, Buffer.from(file));
         });
-        let out = await zip.generateAsync({ type: "arraybuffer" });
-        fs_1.writeFileSync(`${__dirname}/out/${fileName}`, Buffer.from(out));
-        console.log(`File successfuly downloaded named '${fileName}'`);
+        let out = zip.generateNodeStream();
+        let write = fs_1.createWriteStream("./out/" + fileName);
+        out.pipe(write, { end: true }).once("end", () => console.log(`File successfuly downloaded named '${fileName}'`));
     }
     catch (err) {
         console.error(err);
