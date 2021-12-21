@@ -34,7 +34,7 @@ async function main() {
         });
 
         let out = await zip.generateAsync({ type: "arraybuffer" });
-        writeFileSync("../out/" + fileName, Buffer.from(out));
+        writeFileSync("out/" + fileName, Buffer.from(out));
         console.log(`File successfuly downloaded named '${fileName}'`);
     } catch (err) {
         console.error(err);
