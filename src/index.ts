@@ -23,7 +23,7 @@ async function main() {
         zip.folder("images");
         let posts = await getImageChar(tags, safe, limit || 1);
         let promises = posts.map(async ({ large_file_url }, i) => {
-            console.log(`Getting data for`);
+            console.log(`Getting data for '${large_file_url}'`);
             return (await axios.get(large_file_url, { timeout: 10000, responseType: "arraybuffer" }).catch(() => null))?.data;
         });
 
@@ -33,9 +33,9 @@ async function main() {
             zip.file(`images/${i}.${posts[i].file_ext}`, Buffer.from(file));
         });
 
-        let out = zip.generateNodeStream();
-        let write = fs.createWriteStream("./out/" + fileName);
-        out.pipe(write, { end: true }).once("end", () => console.log(`File successfuly downloaded named '${fileName}'`));
+        let out = await zip.generateAsync({ type: "arraybuffer" });
+        fs.writeFileSync("./out/" + fileName, Buffer.from(out));
+        console.log(`File successfuly downloaded named '${fileName}'`);
     } catch (err) {
         console.error(err);
     }
