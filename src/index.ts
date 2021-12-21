@@ -8,7 +8,7 @@ main();
 
 async function main() {
     let date = new Date();
-    let fileName = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}/${date.getMinutes()}/${date.getSeconds}.zip`;
+    let fileName = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}/${date.getMinutes()}/${date.getSeconds()}.zip`;
 
     console.log("============== Download Danbooru ===============");
     let [tags, limit, safe] = await prompt([
@@ -34,7 +34,7 @@ async function main() {
         });
 
         let out = await zip.generateAsync({ type: "arraybuffer" });
-        writeFileSync("./out/" + fileName, Buffer.from(out));
+        writeFileSync("../out/" + fileName, Buffer.from(out));
         console.log(`File successfuly downloaded named '${fileName}'`);
     } catch (err) {
         console.error(err);
