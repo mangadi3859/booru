@@ -30,7 +30,7 @@ const jszip_1 = __importDefault(require("jszip"));
 main();
 async function main() {
     let date = new Date();
-    let fileName = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}/${date.getMinutes()}/${date.getSeconds()}.zip`;
+    let fileName = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}.zip`;
     console.log("============== Download Danbooru ===============");
     let [tags, limit, safe] = await prompt_1.default([
         { type: "string", question: "Tags (max: 2):" },
@@ -52,7 +52,7 @@ async function main() {
             zip.file(`images/${i}.${posts[i].file_ext}`, Buffer.from(file));
         });
         let out = zip.generateNodeStream();
-        let write = fs.createWriteStream(process.cwd() + "/out/" + fileName);
+        let write = fs.createWriteStream("./out/" + fileName);
         out.pipe(write, { end: true }).once("end", () => console.log(`File successfuly downloaded named '${fileName}'`));
     }
     catch (err) {
