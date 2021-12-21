@@ -22,14 +22,15 @@ async function main() {
         let zip = new JsZip();
         zip.folder("images");
         let posts = await getImageChar(tags, safe, limit || 1);
-        let promises = posts.map(async ({ large_file_url }, i) => {
-            console.log(`Getting data for '${large_file_url}'`);
-            return (await axios.get(large_file_url, { timeout: 10000, responseType: "arraybuffer" }).catch(() => null))?.data;
+        let promises = posts.map(async ({ large_file_url, file_url }, i) => {
+            console.log(`${i}. Getting data for '${large_file_url || file_url}'`);
+            return (await axios.get(large_file_url || file_url, { timeout: 10000, responseType: "arraybuffer" }).catch(() => null))?.data;
         });
 
         let resolve = await Promise.all(promises);
         console.log("Processing...");
         resolve.forEach((file, i) => {
+            if (!file) return;
             zip.file(`images/${i}.${posts[i].file_ext}`, Buffer.from(file));
         });
 
